@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using Microsoft.EntityFrameworkCore;
 using WorkerService1;
 using StackExchange.Redis;
 
@@ -7,7 +8,6 @@ builder.Services.AddHostedService<Worker>();
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = "localhost";
-    options.InstanceName = "local";
 });
 builder.Services.AddSingleton<IConsumer<string, string>>(sp =>
 {
@@ -17,6 +17,7 @@ builder.Services.AddSingleton<IConsumer<string, string>>(sp =>
     builder.Configuration.GetSection("Kafka:PersonUpdateConsumer").Bind(kafkaConsumerConfig);
     return new ConsumerBuilder<string, string>(kafkaConsumerConfig).Build();
 });
+builder.Services.AddDbContext<PostgresDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 builder.Services.AddHostedService<LocalQueueWorker>();
 builder.Services.AddHostedService<KafkaConsumerService>();
 var host = builder.Build();

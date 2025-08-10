@@ -24,9 +24,17 @@ public class KafkaConsumerService(
             return;
         }
         var distributed = await distributedCache.GetStringAsync(key);
-        if (distributed == null)
+        if (distributed == null || distributed == "[]")
         {
-            await distributedCache.SetStringAsync(key, result.Value);
+            SimpleMessage sm = JsonConvert.DeserializeObject< SimpleMessage>(result.Value);
+            StoredCasheMessage<SimpleMessage>[] addedValue = new StoredCasheMessage<SimpleMessage>[]{};
+            addedValue.Append(new StoredCasheMessage<SimpleMessage>()
+            {
+                Message = sm, MessageId = Guid.NewGuid()
+            });
+            var addedMessageRaw = JsonConvert.SerializeObject(addedValue);
+            logger.LogInformation($"Adding message into storage cache {addedMessageRaw}");
+            await distributedCache.SetStringAsync(key, addedMessageRaw);
             queueWorker.workerQueue.Enqueue(result);
         }
         else
@@ -85,7 +93,7 @@ public class KafkaConsumerService(
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await DoConsuming(stoppingToken);
+        await Task.Run(() => DoConsuming(stoppingToken), stoppingToken);
     }
 
     public override void Dispose()

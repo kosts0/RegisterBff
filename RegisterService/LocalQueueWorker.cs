@@ -1,17 +1,19 @@
 using Confluent.Kafka;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using WorkerService1.DbEntity;
 using WorkerService1.Dto;
 using WorkerService1.Dto.Utils;
 
 namespace WorkerService1;
 
-public class LocalQueueWorker(IDistributedCache distributedCache, ILogger<LocalQueueWorker> logger) : BackgroundService
+public class LocalQueueWorker(IDistributedCache distributedCache, ILogger<LocalQueueWorker> logger, PostgresDbContext dbContext) : BackgroundService
 {
     public Queue<ConsumeResult<string, string>> workerQueue = new();
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await ProcessQueueMessageAsync(stoppingToken);
+        
+        await Task.Run(() => ProcessQueueMessageAsync(stoppingToken), stoppingToken);
     }
     
     private async Task ProcessQueueMessageAsync(CancellationToken stoppingToken)
@@ -24,10 +26,15 @@ public class LocalQueueWorker(IDistributedCache distributedCache, ILogger<LocalQ
                 var message =  workerQueue.Dequeue();
                 logger.LogInformation("Start operation with message for keycloak auth..., key={0}, value={1}",
                     message.Key, message.Value);
+                dbContext.Users.Add(new User()
+                {
+                    Oid = long.Parse(message.Key)
+                });
+                
                 await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
                 logger.LogInformation("End operation with message for keycloak auth..., key={0}, value={1}", 
                     message.Key, message.Value);
-
+                
                 await UpdateQueueFromDistributedCache(message);
             }else if (DateTimeOffset.Now - lastTimeNotified > TimeSpan.FromSeconds(5))
             {
