@@ -11,10 +11,11 @@ public class KafkaConsumerService(
     IConfiguration configuration,
     ILogger<KafkaConsumerService> logger,
     IDistributedCache  distributedCache,
-    IServiceProvider serviceProvider)
+    IServiceProvider serviceProvider,
+    LocalQueueWorker queueWorker)
     : BackgroundService
 {
-    private LocalQueueWorker queueWorker => serviceProvider.GetService<LocalQueueWorker>();
+    //private LocalQueueWorker queueWorker => serviceProvider.GetService<LocalQueueWorker>();
     private async Task ProcessKafkaMessageAsync(ConsumeResult<string, string> result)
     {
         string key = result.Key;
@@ -93,7 +94,9 @@ public class KafkaConsumerService(
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var queueTask = Task.Run(() => queueWorker.StartAsync(stoppingToken), stoppingToken);
         await Task.Run(() => DoConsuming(stoppingToken), stoppingToken);
+        queueTask?.Dispose();
     }
 
     public override void Dispose()

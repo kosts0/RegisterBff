@@ -6,7 +6,8 @@ namespace WorkerService1;
 public class PostgresDbContext : DbContext
 {
     public DbSet<User> Users { get; set; } = null!;
-    public PostgresDbContext()
+    public PostgresDbContext(DbContextOptions<PostgresDbContext> options)
+        : base(options)
     {
         Database.EnsureCreated();
     }

@@ -7,9 +7,11 @@ using WorkerService1.Dto.Utils;
 
 namespace WorkerService1;
 
-public class LocalQueueWorker(IDistributedCache distributedCache, ILogger<LocalQueueWorker> logger, PostgresDbContext dbContext) : BackgroundService
+public class LocalQueueWorker(IDistributedCache distributedCache, ILogger<LocalQueueWorker> logger, 
+    IServiceScopeFactory _scopeFactory) : BackgroundService
 {
     public Queue<ConsumeResult<string, string>> workerQueue = new();
+    //PostgresDbContext  dbContext => service.GetService<PostgresDbContext>();
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         
@@ -26,11 +28,17 @@ public class LocalQueueWorker(IDistributedCache distributedCache, ILogger<LocalQ
                 var message =  workerQueue.Dequeue();
                 logger.LogInformation("Start operation with message for keycloak auth..., key={0}, value={1}",
                     message.Key, message.Value);
-                dbContext.Users.Add(new User()
+                using (var scope = _scopeFactory.CreateScope())
                 {
-                    Oid = long.Parse(message.Key)
-                });
-                
+                    var dbContext = scope.ServiceProvider.GetRequiredService<PostgresDbContext>();
+                    dbContext.Users.Add(new User()
+                    {
+                        Oid = long.Parse(message.Key),
+                        LastTimeUpdated = DateTime.Now.ToUniversalTime(),
+                        LastUpdateAgent = System.Environment.MachineName
+                    });
+                    await dbContext.SaveChangesAsync();
+                }
                 await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
                 logger.LogInformation("End operation with message for keycloak auth..., key={0}, value={1}", 
                     message.Key, message.Value);

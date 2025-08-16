@@ -18,7 +18,8 @@ builder.Services.AddSingleton<IConsumer<string, string>>(sp =>
     return new ConsumerBuilder<string, string>(kafkaConsumerConfig).Build();
 });
 builder.Services.AddDbContext<PostgresDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
-builder.Services.AddHostedService<LocalQueueWorker>();
+//builder.Services.AddHostedService<LocalQueueWorker>();
 builder.Services.AddHostedService<KafkaConsumerService>();
+builder.Services.AddSingleton<LocalQueueWorker>();
 var host = builder.Build();
 host.Run();
