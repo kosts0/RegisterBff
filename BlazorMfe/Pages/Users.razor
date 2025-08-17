@@ -1,0 +1,42 @@
+@inject HttpClient Http
+@page "/Users"
+<h3>Users</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th aria-label="Oid">Oidc</th>
+        <th aria-label="Last time update">Last time update</th>
+        <th>LastAgentUpdate</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in userList ?? [])
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Oid</td>
+            <td>@user.LastTimeUpdated</td>
+            <td>@user.LastAgentUpdated</td>
+        </tr>
+    }
+    </tbody>
+</table>
+@code {
+
+    private record UserDto(int Id, int Oid, DateTime? LastTimeUpdated, string LastAgentUpdated);
+
+    UserDto[] userList;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var users = await Http.GetAsync("Users");
+            userList = await Http.GetFromJsonAsync<UserDto[]>("Users");
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+    }
+}

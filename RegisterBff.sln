@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterService", "RegisterService\RegisterService.csproj", "{8D238BDF-3FC0-47E4-9CEF-D6073DEC7D0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMfe", "BlazorMfe\BlazorMfe.csproj", "{951F39A6-5860-490A-812F-5A2B6C737462}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bff", "Bff\Bff.csproj", "{744275B0-972C-48E5-9C72-F009C8E05F54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{8D238BDF-3FC0-47E4-9CEF-D6073DEC7D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D238BDF-3FC0-47E4-9CEF-D6073DEC7D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D238BDF-3FC0-47E4-9CEF-D6073DEC7D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{951F39A6-5860-490A-812F-5A2B6C737462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{951F39A6-5860-490A-812F-5A2B6C737462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{951F39A6-5860-490A-812F-5A2B6C737462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{951F39A6-5860-490A-812F-5A2B6C737462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{744275B0-972C-48E5-9C72-F009C8E05F54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{744275B0-972C-48E5-9C72-F009C8E05F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{744275B0-972C-48E5-9C72-F009C8E05F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{744275B0-972C-48E5-9C72-F009C8E05F54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
