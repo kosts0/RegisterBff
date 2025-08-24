@@ -27,7 +27,7 @@ public class KafkaConsumerService(
         var distributed = await distributedCache.GetStringAsync(key);
         if (distributed == null || distributed == "[]")
         {
-            SimpleMessage sm = JsonConvert.DeserializeObject< SimpleMessage>(result.Value);
+            SimpleMessage sm = JsonConvert.DeserializeObject<  SimpleMessage>(result.Value);
             StoredCasheMessage<SimpleMessage>[] addedValue = new StoredCasheMessage<SimpleMessage>[]{};
             addedValue.Append(new StoredCasheMessage<SimpleMessage>()
             {

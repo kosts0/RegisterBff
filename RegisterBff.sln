@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMfe", "BlazorMfe\Blaz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bff", "Bff\Bff.csproj", "{744275B0-972C-48E5-9C72-F009C8E05F54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterServiceV2", "..\RegisterServiceV2\RegisterServiceV2\RegisterServiceV2.csproj", "{DA8C061A-6B32-4C86-AF10-A1A430A8BBB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{744275B0-972C-48E5-9C72-F009C8E05F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{744275B0-972C-48E5-9C72-F009C8E05F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{744275B0-972C-48E5-9C72-F009C8E05F54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA8C061A-6B32-4C86-AF10-A1A430A8BBB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA8C061A-6B32-4C86-AF10-A1A430A8BBB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA8C061A-6B32-4C86-AF10-A1A430A8BBB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA8C061A-6B32-4C86-AF10-A1A430A8BBB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
